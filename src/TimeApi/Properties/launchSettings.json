@@ -20,7 +20,7 @@
     "TimeApi": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "weatherforecast",
+      "launchUrl": "time",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
