@@ -1,0 +1,55 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metadata:
+  name: dotnet-app-deploy
+spec:
+  resources:
+  - name: git-repository
+    type: git
+  tasks:
+  - name: build-from-git
+    taskRef:
+      name: build-from-git
+    resources:
+      inputs:
+        - name: git-repository
+          resource: git-repository
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: build-from-git
+spec:  
+  inputs:
+    # params:
+    resources:
+    - name: git-repository
+      type: git
+      targetPath: .
+    params:
+    - name: oc-cli-image
+      type: string
+      default: 'quay.io/openshift/origin-cli:4.2.0'        
+  # outputs:
+  #   resources:
+  #   - name: build-sources
+  #     type: ubuntu
+  # stepTemplate:
+  #   image: $(inputs.params.oc-cli-image)
+  
+  steps:
+  
+    - name: git-checkout
+      image: quay.io/openshift-pipeline/tektoncd-pipeline-git-init:latest
+      command: ["bash", "-c", "echo Cloning $(inputs.resources.git-repository.url)"] 
+
+    - name: dot-net-build
+      image: registry.redhat.io/dotnet/dotnet-31-rhel7
+      command: ["bash", "-c"]
+      args: 
+        - |-
+          echo ".net version $(dotnet --version)"          
+          mkdir publish          
+          dotnet publish ./src/TimeApi/TimeApi.csproj -o ./publish
+          echo $(ls ./publish)
+
