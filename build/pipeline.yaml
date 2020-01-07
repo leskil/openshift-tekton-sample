@@ -3,6 +3,11 @@ kind: Pipeline
 metadata:
   name: dotnet-app-deploy
 spec:
+  params:
+  - name: git-head-commit
+    type: string
+  - name: git-head-message
+    type: string
   resources:
   - name: git-repository
     type: git
@@ -14,6 +19,11 @@ spec:
       inputs:
         - name: git-repository
           resource: git-repository
+    params:
+      - name: git-head-commit
+        value: $(params.git-head-commit)
+      - name: git-head-message
+        value: $(params.git-head-message)
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: Task
@@ -27,6 +37,10 @@ spec:
       type: git
       targetPath: .
     params:
+    - name: git-head-commit
+      type: string    
+    - name: git-head-message
+      type: string
     - name: oc-cli-image
       type: string
       default: 'quay.io/openshift/origin-cli:4.2.0'        
@@ -41,7 +55,7 @@ spec:
   
     - name: git-checkout
       image: quay.io/openshift-pipeline/tektoncd-pipeline-git-init:latest
-      command: ["bash", "-c", "echo Cloning $(inputs.resources.git-repository.url)"] 
+      command: ["bash", "-c", "echo $(inputs.params.git-head-commit): $(inputs.params.git-head-message)"] 
 
     - name: dot-net-build
       image: registry.redhat.io/dotnet/dotnet-31-rhel7

@@ -3,6 +3,9 @@ kind: TriggerTemplate
 metadata:
   name: dotnet-app-deploy-triggertemplate
 spec:
+  params:
+    - name: git-head-commit
+    - name: git-head-message
   resourcetemplates:
     - apiVersion: tekton.dev/v1alpha1
       kind: PipelineRun
@@ -23,12 +26,12 @@ apiVersion: tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
   name: dotnet-app-deploy-triggerbinding
-# spec: 
-#   params:
-#     - name: git-revision
-#       value: $(body.head_commit.id)
-#     - name: git-repository-name
-#       value: $(body.repository.full_name)
+spec: 
+  params:
+    - name: git-head-commit
+      value: $(body.head_commit.id)
+    - name: git-head-message
+      value: $(body.head_commit.message)
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
