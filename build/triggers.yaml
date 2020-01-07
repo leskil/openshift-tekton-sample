@@ -8,7 +8,6 @@ spec:
       kind: PipelineRun
       metadata:
         generateName: dotnet-app-deploy-run-$(uid)
-        namespace: 
       spec:
         pipelineRef:
           name: dotnet-app-deploy
@@ -42,3 +41,16 @@ spec:
         name: dotnet-app-deploy-triggerbinding
       template:
         name: dotnet-app-deploy-triggertemplate
+---
+apiVersion: tekton.dev/v1alpha1
+kind: PipelineResource
+metadata:
+  generation: 1
+  name: tekton-test
+spec:
+  params:
+  - name: url
+    value: https://github.com/leskil/openshift-tekton-sample.git
+  - name: revision
+    value: master
+  type: git
