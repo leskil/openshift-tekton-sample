@@ -14,7 +14,11 @@ spec:
       spec:
         pipelineRef:
           name: dotnet-app-deploy
-        podTemplate: {}
+        params:
+          - name: git-head-commit
+            value: $(params.git-head-commit)
+          - name: git-head-message
+            value: $(params.git-head-message)
         resources:
           - name: git-repository
             resourceRef:
