@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerTemplate
+metadata:
+  name: dotnet-app-deploy-triggertemplate
+spec:
+  resourcetemplates:
+    - apiVersion: tekton.dev/v1alpha1
+      kind: PipelineRun
+      metadata:
+        generateName: dotnet-app-deploy-run-$(uid)
+        namespace: 
+      spec:
+        pipelineRef:
+          name: dotnet-app-deploy
+        podTemplate: {}
+        resources:
+          - name: git-repository
+            resourceRef:
+              name: tekton-test
+        serviceAccountName: pipeline
+        timeout: 1h0m0s
+---
+apiVersion: tekton.dev/v1alpha1
+kind: TriggerBinding
+metadata:
+  name: dotnet-app-deploy-triggerbinding
+spec: 
+  params:
+    - name: git-revision
+      value: $(body.head_commit.id)
+    - name: git-repository-name
+      value: $(body.repository.full_name)
+---
+apiVersion: tekton.dev/v1alpha1
+kind: EventListener
+metadata: 
+  name: dotnet-app-deploy-eventlistener
+spec:
+  serviceAccountName: pipeline
+  triggers:
+    - binding:
+        name: dotnet-app-deploy-triggerbinding
+      template:
+        name: dotnet-app-deploy-triggertemplate
