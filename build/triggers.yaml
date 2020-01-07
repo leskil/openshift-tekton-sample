@@ -24,12 +24,12 @@ apiVersion: tekton.dev/v1alpha1
 kind: TriggerBinding
 metadata:
   name: dotnet-app-deploy-triggerbinding
-spec: 
-  params:
-    - name: git-revision
-      value: $(body.head_commit.id)
-    - name: git-repository-name
-      value: $(body.repository.full_name)
+# spec: 
+#   params:
+#     - name: git-revision
+#       value: $(body.head_commit.id)
+#     - name: git-repository-name
+#       value: $(body.repository.full_name)
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
