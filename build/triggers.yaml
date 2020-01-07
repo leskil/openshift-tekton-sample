@@ -52,7 +52,6 @@ spec:
 apiVersion: tekton.dev/v1alpha1
 kind: PipelineResource
 metadata:
-  generation: 1
   name: tekton-test
 spec:
   params:
