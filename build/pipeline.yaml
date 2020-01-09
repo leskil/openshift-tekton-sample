@@ -45,13 +45,7 @@ spec:
       default: 'none'
     - name: oc-cli-image
       type: string
-      default: 'quay.io/openshift/origin-cli:4.2.0'        
-  # outputs:
-  #   resources:
-  #   - name: build-sources
-  #     type: ubuntu
-  # stepTemplate:
-  #   image: $(inputs.params.oc-cli-image)
+      default: 'quay.io/openshift/origin-cli:4.2.0'
   
   steps:
 

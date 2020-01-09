@@ -33,9 +33,9 @@ metadata:
 spec: 
   params:
     - name: git-head-commit
-      value: $(body.before)
+      value: $(body.head_commit.id)
     - name: git-head-message
-      value: $(body.after)
+      value: $(body.head_commit.message)
 ---
 apiVersion: tekton.dev/v1alpha1
 kind: EventListener
