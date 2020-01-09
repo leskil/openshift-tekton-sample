@@ -52,7 +52,7 @@ spec:
   #   image: $(inputs.params.oc-cli-image)
   
   steps:
-  
+   
     - name: git-checkout
       image: quay.io/openshift-pipeline/tektoncd-pipeline-git-init:latest
       command: ["bash", "-c", "echo $(inputs.params.git-head-commit): $(inputs.params.git-head-message)"] 
