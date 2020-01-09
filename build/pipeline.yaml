@@ -38,9 +38,11 @@ spec:
       targetPath: .
     params:
     - name: git-head-commit
-      type: string    
+      type: string
+      default: 'noop'
     - name: git-head-message
       type: string
+      default: 'none'
     - name: oc-cli-image
       type: string
       default: 'quay.io/openshift/origin-cli:4.2.0'        
@@ -52,7 +54,7 @@ spec:
   #   image: $(inputs.params.oc-cli-image)
   
   steps:
-   
+
     - name: git-checkout
       image: quay.io/openshift-pipeline/tektoncd-pipeline-git-init:latest
       command: ["bash", "-c", "echo $(inputs.params.git-head-commit): $(inputs.params.git-head-message)"] 
