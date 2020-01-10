@@ -1,0 +1,44 @@
+apiVersion: tekton.dev/v1alpha1
+kind: Pipeline
+metaData:
+  name: conditioned-pipeline
+spec:
+  params:
+    - name: branch-name
+      type: string
+  tasks:
+    - name: conditional-task
+      taskRef:
+        name: conditional-task
+      conditions:
+        - conditionRef: should-deploy-branch
+          params:
+            - name: branch-name
+              value: $(params.branch-name)
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Task
+metadata:
+  name: conditional-task
+spec:
+  inputs:
+    params:
+      - name: branch-name
+        type: string
+  steps:
+    - name: echo-branch-name
+      image: 'quay.io/openshift/origin-cli:latest'
+      command: ['/bin/bash', '-c']
+      args: ['echo $(params.branch-name']
+---
+apiVersion: tekton.dev/v1alpha1
+kind: Condition
+metadata:
+  name: check-branch-is-master
+spec:
+  params:
+    - name: branch-name
+  check:
+    image: 'quay.io/openshift/origin-cli:latest' # Or some other alpine-ish image, but this one is already in use in the pipeline and doesn't need to be downloaded again.
+    command: ["bash", "-c"]
+    args: ['test $(params.branch-name) = "master"']
