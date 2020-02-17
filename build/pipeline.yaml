@@ -49,10 +49,6 @@ spec:
   
   steps:
 
-    - name: git-checkout
-      image: quay.io/openshift-pipeline/tektoncd-pipeline-git-init:latest
-      command: ["bash", "-c", "echo $(inputs.params.git-head-commit): $(inputs.params.git-head-message)"] 
-
     - name: dot-net-build
       image: registry.redhat.io/dotnet/dotnet-31-rhel7
       command: ["bash", "-c"]
