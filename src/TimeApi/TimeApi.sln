@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeApi", "TimeApi.csproj", "{0B5AB8A3-5F12-4E81-A06F-0AD3FE0A38FC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TimeApi.Tests", "TimeApi.Tests\TimeApi.Tests.csproj", "{5244497D-9132-4350-BD5C-43076B691556}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,5 +15,9 @@ Global
 		{0B5AB8A3-5F12-4E81-A06F-0AD3FE0A38FC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5AB8A3-5F12-4E81-A06F-0AD3FE0A38FC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B5AB8A3-5F12-4E81-A06F-0AD3FE0A38FC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5244497D-9132-4350-BD5C-43076B691556}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5244497D-9132-4350-BD5C-43076B691556}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5244497D-9132-4350-BD5C-43076B691556}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5244497D-9132-4350-BD5C-43076B691556}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
