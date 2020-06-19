@@ -1,0 +1,84 @@
+apiVersion: tekton.dev/v1beta1
+kind: Pipeline
+metadata:
+  name: app-build
+spec:
+  resources:
+    - name: source-repo
+      type: git
+  params:
+    - name: solution-file
+      type: string
+      description: Path to the solution file to test and build
+  tasks:
+    - name: dotnet-build
+      taskRef:
+        name: dotnet-build
+      params:
+        - name: solution-file
+          value: $(params.solution-file)
+      resources:
+        inputs:
+          - name: workspace
+            resource: source-repo
+            
+---
+apiVersion: tekton.dev/v1beta1
+kind: Task
+metadata:
+  name: dotnet-build
+spec:
+  # params:
+  resources:
+    inputs:
+      - name: workspace # This will also be the name of the folder where the repo is cloned in to
+        type: git
+  params:
+    - name: solution-file
+      type: string
+  results:
+    - name: test-results
+      description: The results of running unit tests
+
+  # stepTemplate:
+  #   - image: registry.redhat.io/dotnet/dotnet-31-rhel7
+
+  steps:
+    
+    # - name: pause
+    #   image: registry.redhat.io/dotnet/dotnet-31-rhel7
+    #   args: ["sleep", "6000"]          
+
+    - name: init-ocp-scripts
+      image: registry.redhat.io/dotnet/dotnet-31-rhel7
+      command: ["bash", "-c"]
+      args: 
+        - |-
+          echo "Granting execute permissions to OCP scripts"
+          cd workspace/build
+          chmod +x ocp-resource-exists.sh
+
+    - name: run-tests
+      image: registry.redhat.io/dotnet/dotnet-31-rhel7
+      command: ["bash", "-c"]
+      args: 
+        - |-
+          dotnet test ./workspace/$(params.solution-file) -r test-results/ -l trx
+          echo "Results folder: $(ls tekton/results)"
+          mkdir --parents tekton/results 
+          mv test-results/`ls test-results/. | head -n 1` tekton/results/test-results
+
+    - name: build-sources
+      image: registry.redhat.io/dotnet/dotnet-31-rhel7
+      command: ["bash", "-c"]
+      args: 
+        - |-
+          echo ".NET version: $(dotnet --version)"
+          echo "Working directory: $(pwd)"
+          echo "Workspace dir: $(ls ./workspace -la)"
+          echo "Test results: $(ls tekton/results)"
+          dotnet build ./workspace/$(params.solution-file)
+
+
+
+# TODO: Use GitHub's super linter?
