@@ -5,6 +5,7 @@
 
 .DS_Store
 .vscode/
+src/test-results/**
 
 # User-specific files
 *.suo
